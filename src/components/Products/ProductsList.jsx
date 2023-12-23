@@ -10,7 +10,6 @@ const ProductsList = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useSearchParams();
   const category = search.get("category");
-  // const page = search.get("page");
 
   const { data, error, isLoading } = useData(
     "/products",
