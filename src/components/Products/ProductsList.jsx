@@ -10,22 +10,24 @@ const ProductsList = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useSearchParams();
   const category = search.get("category");
+  const searchQuery = search.get("search");
 
   const { data, error, isLoading } = useData(
     "/products",
     {
       params: {
+        search: searchQuery,
         category,
         perPage: 10,
         page: page,
       },
     },
-    [category, page]
+    [searchQuery, category, page]
   );
 
   useEffect(() => {
     setPage(1);
-  }, [category]);
+  }, [searchQuery, category]);
 
   const skeletons = [1, 2, 3, 4, 5, 6, 7, 8];
 
@@ -75,19 +77,9 @@ const ProductsList = () => {
         {error && <em className="form_error">{error}</em>}
         {data?.products &&
           data.products.map((product) => (
-            <ProductCard
-              key={product._id}
-              // id={product._id}
-              // image={product.images[0]}
-              // price={product.price}
-              // title={product.title}
-              // rating={product.reviews.rate}
-              // ratingCounts={product.reviews.counts}
-              // stock={product.stock}
-              product={product}
-            />
+            <ProductCard key={product._id} product={product} />
           ))}
-        {isLoading && skeletons.map((n) => <ProductCardSkeleton key={n._id} />)}
+        {isLoading && skeletons.map((n) => <ProductCardSkeleton key={n} />)}
         {/* {data && (
           <Pagination
             totalPosts={data.totalProducts}

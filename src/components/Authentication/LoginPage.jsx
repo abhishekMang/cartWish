@@ -4,6 +4,8 @@ import "./LoginPage.css";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { logIn } from "../../services/userService";
+import { Navigate, useLocation } from "react-router-dom";
+import { getUser } from "../../services/userService";
 // import { useNavigate } from "react-router-dom";
 
 const schema = z.object({
@@ -18,6 +20,8 @@ const schema = z.object({
 
 const LoginPage = () => {
   const [formError, setFormError] = useState("");
+  const location = useLocation();
+  console.log("login location", location);
   // let navigate = useNavigate();
   const {
     register,
@@ -29,7 +33,8 @@ const LoginPage = () => {
     console.log(formData);
     try {
       await logIn(formData);
-      window.location = "/";
+      const { state } = location;
+      window.location = state ? state.from : "/";
     } catch (err) {
       if (err.response && err.response.status == 400) {
         console.log(err.response);
@@ -37,6 +42,10 @@ const LoginPage = () => {
       }
     }
   };
+
+  if (getUser()) {
+    return <Navigate to="/" />;
+  }
 
   //   console.log(formState.errors);
 

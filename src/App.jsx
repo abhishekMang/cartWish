@@ -43,7 +43,7 @@ const App = () => {
     // console.log("Product Index", productIndex);
     // console.log("Updated cart", updatedCart);
     if (productIndex === -1) {
-      updatedCart.push({ product: product._id, quantity: product.quantity });
+      updatedCart.push({ product: product, quantity: quantity });
     } else {
       updatedCart[productIndex].quantity += quantity;
     }
@@ -135,6 +135,7 @@ const App = () => {
               // addToCart={addToCart}
               removeFromCart={removeFromCart}
               updateCart={updateCart}
+              setCart={setCart}
             />
           </main>
         </div>

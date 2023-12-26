@@ -5,8 +5,10 @@ import user from "../../assets/user.webp";
 import Table from "../Common/Table";
 import QuantityInput from "../SingleProduct/QuantityInput";
 import remove from "../../assets/remove.png";
+import { checkoutAPI } from "../../services/orderServices";
+import { toast } from "react-toastify";
 
-const CartPage = ({ cart, removeFromCart, updateCart }) => {
+const CartPage = ({ cart, removeFromCart, updateCart, setCart }) => {
   const [subTotal, setSubTotal] = useState(0);
   const userObj = useContext(UserContext);
   // console.log(userObj);
@@ -17,6 +19,20 @@ const CartPage = ({ cart, removeFromCart, updateCart }) => {
     });
     setSubTotal(total);
   }, [cart]);
+
+  const checkout = () => {
+    const oldCart = [...cart];
+    setCart([]);
+
+    checkoutAPI()
+      .then(() => {
+        toast.success("Order Placed successfully!");
+      })
+      .catch(() => {
+        toast.error("Something went wrong!");
+        setCart(oldCart);
+      });
+  };
 
   return (
     <section className="align_center cart_page">
@@ -77,7 +93,9 @@ const CartPage = ({ cart, removeFromCart, updateCart }) => {
           </tr>
         </tbody>
       </table>
-      <button className="search_button checkout_button">Checkout</button>
+      <button className="search_button checkout_button" onClick={checkout}>
+        Checkout
+      </button>
     </section>
   );
 };

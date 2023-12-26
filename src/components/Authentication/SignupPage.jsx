@@ -5,7 +5,7 @@ import user from "../../assets/user.webp";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUp } from "../../services/userService";
-// import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 const schema = z
   .object({
@@ -52,7 +52,11 @@ const SignupPage = () => {
     }
   };
 
-  console.log(profilePic);
+  // console.log(profilePic);
+
+  if (getUser()) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <section className="align_center form_page">
